@@ -90,4 +90,13 @@ public class SimpleAuthService implements AuthService {
 
         }
     }
+    public static void disconnect() {
+
+        try {
+            connection.close();
+            System.out.println("Отключение от Базы данных");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
 }

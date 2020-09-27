@@ -95,6 +95,7 @@ public class ClientHandler {
                 } catch (IOException e) {
                     e.printStackTrace();
                 } finally {
+
                     System.out.println("Клиент отключился");
                     server.unsubscribe(this);
                     try {
@@ -102,6 +103,7 @@ public class ClientHandler {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    SimpleAuthService.disconnect();
                 }
             }).start();
         } catch (IOException e) {
