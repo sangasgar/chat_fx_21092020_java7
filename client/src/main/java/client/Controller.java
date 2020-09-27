@@ -141,7 +141,7 @@ public class Controller implements Initializable {
                         } catch (SQLException throwables) {
                             throwables.printStackTrace();
                         }
-                        disconnect();
+
 
                         while (true) {
                             String str = in.readUTF();

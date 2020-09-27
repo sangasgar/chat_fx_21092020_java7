@@ -3,6 +3,7 @@ package server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +17,7 @@ public class Server {
     ServerSocket server = null;
     Socket socket = null;
 
+
     public Server() {
         clients = new Vector<>();
         authService = new SimpleAuthService();
@@ -23,6 +25,7 @@ public class Server {
         try {
             server = new ServerSocket(PORT);
             System.out.println("Сервер запущен");
+
 
             while (true) {
                 socket = server.accept();
@@ -102,5 +105,6 @@ public class Server {
             c.sendMsg(msg);
         }
     }
+
 
 }
