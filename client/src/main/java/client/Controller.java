@@ -18,12 +18,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.net.URL;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -60,6 +59,11 @@ public class Controller implements Initializable {
     private Stage stage;
     private Stage regStage;
     private RegController regController;
+    private static File file;
+    private static FileInputStream infile;
+    private static FileOutputStream outfile;
+    private static Integer historyfile;
+    private static ArrayList<Integer> history;
 
     public void setAuthenticated(boolean authenticated) {
         this.authenticated = authenticated;
@@ -128,7 +132,6 @@ public class Controller implements Initializable {
             socket = new Socket(IP_ADDRESS, PORT);
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
-
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -160,9 +163,22 @@ public class Controller implements Initializable {
                             }
 
                             textArea.appendText(str + "\n");
+
+
                         }
 
                         //цикл работы
+                        outfile = new FileOutputStream("history/" + "history_" + nickname + ".txt",true);
+                        System.out.println(nickname);
+                        byte[] array = new byte[10];
+                        try (FileInputStream  str1 = new FileInputStream("history/" + "history_" + nickname + ".txt");) {
+
+                            int x;
+                            while (str1.read(array) > 0) {
+                                textArea.appendText(new String(array));
+
+                            }
+                        }
                         while (true) {
                             String str = in.readUTF();
 
@@ -181,6 +197,10 @@ public class Controller implements Initializable {
                                 }
                             } else {
                                 textArea.appendText(str + "\n");
+                                outfile.write(str.getBytes());
+                                outfile.write("\n".getBytes());
+
+
                             }
                         }
                     } catch (IOException e) {
@@ -255,6 +275,7 @@ public class Controller implements Initializable {
             e.printStackTrace();
         }
     }
+
 
     public void registration(ActionEvent actionEvent) {
         regStage.show();
